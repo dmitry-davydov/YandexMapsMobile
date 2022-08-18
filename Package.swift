@@ -22,9 +22,22 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .binaryTarget(
-            name: "YandexMapsMobile",
+            name: "YandexMapsMobileBinary",
             url: "https://github.com/c-villain/YandexMapsMobile/releases/download/4.1.0/YandexMapsMobile.xcframework.zip",
             checksum: "39dfada35ae5e7df7ee5df6d5f489906bc093c8da60bc829c2361d0920062892"
+        ),
+        .target(
+            name: "YandexMapsMobile",
+            dependencies: [
+                .target(name: "YandexMapsMobileBinary"),
+            ],
+            linkerSettings: [
+                .linkedFramework("CoreLocation"),
+                .linkedFramework("CoreTelephony"),
+                .linkedFramework("SystemConfiguration"),
+                .linkedLibrary("c++"),
+                .unsafeFlags(["-ObjC"]),
+            ]
         ),
     ]
 )
